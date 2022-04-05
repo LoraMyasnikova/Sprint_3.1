@@ -48,7 +48,7 @@ public class OrderListTest {
         int statusCode = getOrderListResponse.extract().statusCode();
         ArrayList<String> ordersList = getOrderListResponse.extract().path("orders");
 
-        assertThat("", statusCode, equalTo(SC_OK));
-        assertThat("", ordersList, notNullValue());
+        assertThat("The status code is " + statusCode, statusCode, equalTo(SC_OK));
+        assertThat("Some data were wrong", ordersList, notNullValue());
     }
 }
