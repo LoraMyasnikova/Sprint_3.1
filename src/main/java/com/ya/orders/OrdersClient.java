@@ -17,8 +17,8 @@ import static io.restassured.RestAssured.given;
 public class OrdersClient extends ScooterRestClient {
 
     private static final String ORDER_CREATION_PATH = "/api/v1/orders";
-    private static final String ORDER_DELETION_PATH = "/api/v1/orders/cancel/?track=";
-    private static final String GET_ORDER_PATH = "/api/v1/orders/track?t=";
+    private static final String ORDER_DELETION_PATH = "/api/v1/orders/cancel/";
+    private static final String GET_ORDER_PATH = "/api/v1/orders/track";
     private static final String GET_ORDER_LIST_PATH = "/api/v1/orders";
 
     @Step("Create an order")
@@ -36,7 +36,8 @@ public class OrdersClient extends ScooterRestClient {
         return given()
                 .spec(getBaseSpec())
                 .when()
-                .get(GET_ORDER_PATH + track)
+                .queryParam("t", track)
+                .get(GET_ORDER_PATH)
                 .then();
     }
 
@@ -45,7 +46,8 @@ public class OrdersClient extends ScooterRestClient {
         return given()
                 .spec(getBaseSpec())
                 .when()
-                .put(ORDER_DELETION_PATH + track)
+                .queryParam("track", track)
+                .put(ORDER_DELETION_PATH)
                 .then();
     }
 
