@@ -28,7 +28,11 @@ public class CourierLoginNegativeTest extends FeatureLoginCourierTest {
     @Before
     public void setUp() {
         Courier courierCredentials = CourierClient.getRandomCredentials();
-        courier = new Courier(courierCredentials.getLogin(), courierCredentials.getPassword(), courierCredentials.getFirstName());
+        courier = Courier.builder()
+                .login(courierCredentials.getLogin())
+                .password(courierCredentials.getPassword())
+                .firstName(courierCredentials.getFirstName())
+                .build();
         courierClient.create(courier);
     }
 
@@ -43,7 +47,11 @@ public class CourierLoginNegativeTest extends FeatureLoginCourierTest {
     @Description("Create a courier with valid credentials. Log in with wrong login. Response should contain an error message. " +
             "Postcondition: Log in with correct credentials. Get courier's ID and delete the courier.")
     public void courierCantLoginWithWrongLogin() {
-        CourierCredentials credentials = new CourierCredentials(RandomStringUtils.randomAlphabetic(10), courier.getPassword());
+        CourierCredentials credentials = CourierCredentials.builder()
+                .login(RandomStringUtils.randomAlphabetic(10))
+                .password(courier.getPassword())
+                .build();
+
         ValidatableResponse loginResponse = courierClient.login(credentials);
         statusCode = loginResponse.extract().statusCode();
         message = loginResponse.extract().path("message");
@@ -57,7 +65,11 @@ public class CourierLoginNegativeTest extends FeatureLoginCourierTest {
     @Description("Create a courier with valid credentials. Log in with wrong password. Response should contain an error message. " +
             "Postcondition: Log in with correct credentials. Get courier's ID and delete the courier.")
     public void courierCantLoginWithWrongPassword() {
-        CourierCredentials credentials = new CourierCredentials(courier.getLogin(), RandomStringUtils.randomAlphabetic(10));
+        CourierCredentials credentials = CourierCredentials.builder()
+                .login(courier.getLogin())
+                .password(RandomStringUtils.randomAlphabetic(10))
+                .build();
+
         ValidatableResponse loginResponse = courierClient.login(credentials);
         statusCode = loginResponse.extract().statusCode();
         message = loginResponse.extract().path("message");
@@ -72,7 +84,10 @@ public class CourierLoginNegativeTest extends FeatureLoginCourierTest {
     @Description("Create a courier with valid credentials. Log in with only login field. Response should contain an error message. " +
             "Postcondition: Log in with correct credentials. Get courier's ID and delete the courier.")
     public void courierCantLoginWithLoginFieldOnly() {
-        CourierCredentials credentials = new CourierCredentials(courier.getLogin(), "");
+        CourierCredentials credentials = CourierCredentials.builder()
+                .login(courier.getLogin())
+                .build();
+
         ValidatableResponse loginResponse = courierClient.login(credentials);
         statusCode = loginResponse.extract().statusCode();
         message = loginResponse.extract().path("message");
@@ -86,7 +101,10 @@ public class CourierLoginNegativeTest extends FeatureLoginCourierTest {
     @Description("Create a courier with valid credentials. Log in with only password field. Response should contain an error message. " +
             "Postcondition: Log in with correct credentials. Get courier's ID and delete the courier.")
     public void courierCantLoginWithPasswordFieldOnly() {
-        CourierCredentials credentials = new CourierCredentials("", courier.getPassword());
+        CourierCredentials credentials = CourierCredentials.builder()
+                .password(courier.getPassword())
+                .build();
+
         ValidatableResponse loginResponse = courierClient.login(credentials);
         statusCode = loginResponse.extract().statusCode();
         message = loginResponse.extract().path("message");
@@ -102,7 +120,11 @@ public class CourierLoginNegativeTest extends FeatureLoginCourierTest {
             "Postcondition: Log in with correct credentials. Get courier's ID and delete the courier.")
     public void courierCantLoginWithInvalidCredentials() {
         String invalidLogin = courier.getLogin() + "q";
-        CourierCredentials credentials = new CourierCredentials(invalidLogin, courier.getPassword());
+        CourierCredentials credentials = CourierCredentials.builder()
+                .login(invalidLogin)
+                .password(courier.getPassword())
+                .build();
+
         ValidatableResponse loginResponse = courierClient.login(credentials);
         statusCode = loginResponse.extract().statusCode();
         message = loginResponse.extract().path("message");

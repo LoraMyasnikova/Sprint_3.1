@@ -27,7 +27,11 @@ public class CourierLoginPositiveTest extends FeatureLoginCourierTest {
     @Before
     public void setUp() {
         Courier courierCredentials = CourierClient.getRandomCredentials();
-        courier = new Courier(courierCredentials.getLogin(), courierCredentials.getPassword(), courierCredentials.getFirstName());
+        courier = Courier.builder()
+                .login(courierCredentials.getLogin())
+                .password(courierCredentials.getPassword())
+                .firstName(courierCredentials.getFirstName())
+                .build();
         courierClient.create(courier);
     }
 
@@ -43,7 +47,11 @@ public class CourierLoginPositiveTest extends FeatureLoginCourierTest {
     @DisplayName("Courier can login with valid credentials")
     @Description("Courier logs in with required valid credentials. Request returns courier's ID")
     public void courierCanLoginWithValidCredentials() {
-        CourierCredentials credentials = new CourierCredentials(courier.getLogin(), courier.getPassword());
+        CourierCredentials credentials = CourierCredentials.builder()
+                .login(courier.getLogin())
+                .password(courier.getPassword())
+                .build();
+
         ValidatableResponse loginResponse = courierClient.login(credentials);
         int statusCode = loginResponse.extract().statusCode();
         courierId = loginResponse.extract().path("id");

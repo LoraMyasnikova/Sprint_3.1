@@ -23,7 +23,11 @@ public class DataForTest {
     public static void clearCourierTestData(Courier courier) {
         CourierClient courierClient = new CourierClient();
 
-        CourierCredentials courierCredentials = new CourierCredentials(courier.getLogin(), courier.getPassword());
+        CourierCredentials courierCredentials = CourierCredentials.builder()
+                .login(courier.getLogin())
+                .password(courier.getPassword())
+                .build();
+
         ValidatableResponse loginResponse = courierClient.login(courierCredentials);
         int statusCodeForLogin = loginResponse.extract().statusCode();
 

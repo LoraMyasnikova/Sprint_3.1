@@ -37,9 +37,9 @@ public class OrderCreationTest {
     @Parameterized.Parameters
     public static Object[][] getColorData() {
         return new Object[][]{
-                {new String[]{"BLACK", ""}, SC_CREATED},
+                {new String[]{"BLACK"}, SC_CREATED},
                 {new String[]{"BLACK", "GREY"}, SC_CREATED},
-                {new String[]{"", ""}, SC_CREATED}
+                {new String[]{}, SC_CREATED}
         };
     }
 

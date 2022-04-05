@@ -27,7 +27,12 @@ public class CreateIdenticalCourierTest extends FeatureCreatingCourierTest {
     @Before
     public void setUp() {
         Courier courierCredentials = CourierClient.getRandomCredentials();
-        courier = new Courier(courierCredentials.getLogin(), courierCredentials.getPassword(), courierCredentials.getFirstName());
+        courier = Courier.builder()
+                .login(courierCredentials.getLogin())
+                .password(courierCredentials.getPassword())
+                .firstName(courierCredentials.getFirstName())
+                .build();
+
         courierClient.create(courier);
     }
 
@@ -41,7 +46,12 @@ public class CreateIdenticalCourierTest extends FeatureCreatingCourierTest {
     @DisplayName("Creating identical courier returns conflict")
     @Description("Create a courier with random credentials and register him. Register another one courier with same credentials.")
     public void createIdenticalCourierReturnsConflict() {
-        Courier courierIdentical = new Courier(courier.getLogin(), courier.getPassword(), courier.getFirstName());
+        Courier courierIdentical = Courier.builder()
+                .login(courier.getLogin())
+                .password(courier.getPassword())
+                .firstName(courier.getFirstName())
+                .build();
+
         ValidatableResponse registrationResponse = courierClient.create(courierIdentical);
         statusCode = registrationResponse.extract().statusCode();
         message = registrationResponse.extract().path("message");
@@ -55,8 +65,12 @@ public class CreateIdenticalCourierTest extends FeatureCreatingCourierTest {
     @DisplayName("Creating courier with existing login returns conflict")
     @Description("Create a courier with random credentials and register him. Register another one courier with same login.")
     public void createCourierWithExistingLoginReturnsConflict() {
-        Courier courierWithExistingLogin = new Courier(courier.getLogin(), RandomStringUtils.randomAlphabetic(10),
-                RandomStringUtils.randomAlphabetic(10));
+        Courier courierWithExistingLogin = Courier.builder()
+                .login(courier.getLogin())
+                .password(RandomStringUtils.randomAlphabetic(10))
+                .firstName(RandomStringUtils.randomAlphabetic(10))
+                .build();
+
         ValidatableResponse registrationResponse = courierClient.create(courierWithExistingLogin);
         statusCode = registrationResponse.extract().statusCode();
         message = registrationResponse.extract().path("message");

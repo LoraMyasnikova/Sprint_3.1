@@ -37,7 +37,12 @@ public class CreateNewCourierTest extends FeatureCreatingCourierTest {
             "Postcondition: Login with valid credentials. Get courier's ID and delete the courier.")
     public void createNewCourierReturnsCreated() {
         Courier courierCredentials = CourierClient.getRandomCredentials();
-        courier = new Courier(courierCredentials.getLogin(), courierCredentials.getPassword(), courierCredentials.getFirstName());
+        courier = Courier.builder()
+                .login(courierCredentials.getLogin())
+                .password(courierCredentials.getPassword())
+                .firstName(courierCredentials.getFirstName())
+                .build();
+
         ValidatableResponse registrationResponse = courierClient.create(courier);
         statusCode = registrationResponse.extract().statusCode();
         ok = registrationResponse.extract().path("ok");
@@ -52,7 +57,11 @@ public class CreateNewCourierTest extends FeatureCreatingCourierTest {
     @Description("Register a courier without password field. The system should return an error message.")
     public void createCourierWithoutPasswordFieldReturnsBadRequest() {
         Courier courierCredentials = CourierClient.getRandomCredentials();
-        courier = new Courier(courierCredentials.getLogin(), "", courierCredentials.getFirstName());
+        courier = Courier.builder()
+                .login(courierCredentials.getLogin())
+                .firstName(courierCredentials.getFirstName())
+                .build();
+
         ValidatableResponse registrationResponse = courierClient.create(courier);
         statusCode = registrationResponse.extract().statusCode();
         message = registrationResponse.extract().path("message");
@@ -66,7 +75,11 @@ public class CreateNewCourierTest extends FeatureCreatingCourierTest {
     @Description("Register a courier without login field. The system should return an error message.")
     public void createCourierWithoutLoginFieldReturnsBadRequest() {
         Courier courierCredentials = CourierClient.getRandomCredentials();
-        courier = new Courier("", courierCredentials.getPassword(), courierCredentials.getFirstName());
+        courier = Courier.builder()
+                .password(courierCredentials.getPassword())
+                .firstName(courierCredentials.getFirstName())
+                .build();
+
         ValidatableResponse registrationResponse = courierClient.create(courier);
         statusCode = registrationResponse.extract().statusCode();
         message = registrationResponse.extract().path("message");
@@ -80,7 +93,11 @@ public class CreateNewCourierTest extends FeatureCreatingCourierTest {
     @Description("Register a courier without first name field. The system should return an error message.")
     public void createCourierWithoutFirstNameFieldReturnsBadRequest() {
         Courier courierCredentials = CourierClient.getRandomCredentials();
-        courier = new Courier(courierCredentials.getLogin(), courierCredentials.getPassword(), "");
+        courier = Courier.builder()
+                .login(courierCredentials.getLogin())
+                .password(courierCredentials.getPassword())
+                .build();
+
         ValidatableResponse registrationResponse = courierClient.create(courier);
         statusCode = registrationResponse.extract().statusCode();
         message = registrationResponse.extract().path("message");
@@ -96,7 +113,13 @@ public class CreateNewCourierTest extends FeatureCreatingCourierTest {
             "Postcondition: Login with valid credentials. Get courier's ID and delete the courier.")
     public void createCourierWithOnlyRequiredFieldsReturnsCreated() {
         Courier courierCredentials = CourierClient.getRandomCredentials();
-        courier = new Courier(courierCredentials.getLogin(), courierCredentials.getPassword(), null);
+
+        courier = Courier.builder()
+                .login(courierCredentials.getLogin())
+                .password(courierCredentials.getPassword())
+                .firstName(courierCredentials.getFirstName())
+                .build();
+
         ValidatableResponse registrationResponse = courierClient.create(courier);
         statusCode = registrationResponse.extract().statusCode();
         ok = registrationResponse.extract().path("ok");
