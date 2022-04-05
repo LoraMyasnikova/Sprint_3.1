@@ -61,8 +61,19 @@ public class OrderCreationTest {
         OrdersClient ordersClient = new OrdersClient();
         OrderData orderData = OrdersClient.getRandomOrderData();
         orderData.setColor(color);
-        Order order = new Order(orderData.getFirstName(), orderData.getLastName(), orderData.getAddress(), orderData.getMetroStation(),
-                orderData.getPhone(), orderData.getRentTime(), orderData.getDeliveryDate(), orderData.getComment(), orderData.getColor());
+
+        Order order = Order.builder()
+                .firstName(orderData.getFirstName())
+                .lastName(orderData.getLastName())
+                .address(orderData.getAddress())
+                .metroStation(orderData.getMetroStation())
+                .phone(orderData.getPhone())
+                .rentTime(orderData.getRentTime())
+                .deliveryDate(orderData.getDeliveryDate())
+                .comment(orderData.getComment())
+                .color(orderData.getColor())
+                .build();
+
         ValidatableResponse createOrderResponse = ordersClient.createOrder(order);
         int statusCode = createOrderResponse.extract().statusCode();
         track = createOrderResponse.extract().path("track");

@@ -1,8 +1,10 @@
 package com.ya.orders;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class OrderData {
 
     private String firstName;
@@ -14,17 +16,4 @@ public class OrderData {
     private String deliveryDate;
     private String comment;
     private String[] color;
-
-    public OrderData(String firstName, String lastName, String address, String metroStation, String phone, int rentTime,
-                     String deliveryDate, String comment, String[] color) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-        this.metroStation = metroStation;
-        this.phone = phone;
-        this.rentTime = rentTime;
-        this.deliveryDate = deliveryDate;
-        this.comment = comment;
-        this.color = color;
-    }
 }
